@@ -5,6 +5,13 @@ edition = "2024"
 
 [dependencies]
 chrono = { version = "0.4.43", features = ["serde"] }
+console_error_panic_hook = "0.1.7"
 csv = "1.4.0"
 leptos = { version = "0.8.17", features = ["csr"] }
 serde = { version = "1.0.228", features = ["derive"] }
+web-sys = { version = "0.3.92", features = [
+    "Blob",
+    "File",
+    "FileList",
+    "HtmlInputElement",
+] }

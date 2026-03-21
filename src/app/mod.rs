@@ -1,8 +1,12 @@
 use leptos::prelude::*;
 
+mod components;
+
+use components::LoadFile;
+
 #[component]
 pub fn App() -> impl IntoView {
     view! {
-        <p>"Hello, world!"</p>
+        <LoadFile />
     }
 }

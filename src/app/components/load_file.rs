@@ -28,9 +28,14 @@ pub fn LoadFile(on_load: impl Fn(String) + 'static) -> impl IntoView {
     };
 
     view! {
-        <div>
+        <div class="p-5 border-gb-fg border w-max flex flex-col items-center">
             <p>"Choose an annotation file to analyze:"</p>
-            <input type="file" accept="text/csv" on:input=handle_upload />
+            <input
+                class="mt-2 file:bg-gb-blue file:rounded-xl file:p-1 file:mr-2"
+                type="file"
+                accept="text/csv"
+                on:input=handle_upload
+            />
         </div>
     }
 }

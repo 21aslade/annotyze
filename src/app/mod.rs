@@ -6,13 +6,11 @@ use leptos::prelude::*;
 
 mod components;
 
-use components::{LoadFile, Summary};
+use components::LoadFile;
 
-#[derive(Clone, Debug)]
-struct AnnotSet {
-    annotations: Vec<Annotation>,
-    study: Study,
-}
+use crate::app::components::{analytics::AnnotSet, Analytics};
+
+const DASHLEY: &'static str = include_str!("../../dashley.csv");
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -36,8 +34,13 @@ pub fn App() -> impl IntoView {
 
         set_annotations.set(Some(AnnotSet { annotations, study }))
     };
+    on_load(DASHLEY.to_string());
     view! {
-        <LoadFile on_load=on_load />
-        {move || annotations.with(|a| a.as_ref().map(|a| view! { <Summary item=&a.study /> }))}
+        <div class="bg-gb-bg text-gb-fg min-w-screen min-h-screen flex flex-col items-center p-20 space-y-10">
+            <LoadFile on_load=on_load />
+            {move || {
+                annotations.with(|a| a.as_ref().map(|a| view! { <Analytics annotations=a /> }))
+            }}
+        </div>
     }
 }

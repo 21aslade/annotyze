@@ -32,7 +32,7 @@ pub struct Scriptures {
     unknown: Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BoM {
     count: usize,
     introduction: Chapter,
@@ -54,7 +54,7 @@ pub struct BoM {
     unknown: Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DnC {
     count: usize,
     title: Chapter,
@@ -65,7 +65,7 @@ pub struct DnC {
     unknown: Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Ot {
     count: usize,
     genesis: Chapters,
@@ -110,7 +110,7 @@ pub struct Ot {
     unknown: Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Nt {
     count: usize,
     title: Chapter,
@@ -131,20 +131,20 @@ pub struct Nt {
     tim1: Chapters,
     tim2: Chapters,
     titus: Chapters,
-    philemon: Chapters,
+    philemon: Chapter,
     heb: Chapters,
     james: Chapters,
     peter1: Chapters,
     peter2: Chapters,
     john1: Chapters,
-    john2: Chapters,
-    john3: Chapters,
-    jude: Chapters,
+    john2: Chapter,
+    john3: Chapter,
+    jude: Chapter,
     revelation: Chapters,
     unknown: Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PGP {
     count: usize,
     moses: Chapters,
@@ -208,7 +208,10 @@ impl LibraryItem for Study {
     }
 
     fn children<'a>(&'a self) -> Box<dyn Iterator<Item = &'a dyn LibraryItem> + 'a> {
-        Box::new([&self.scriptures as _, &self.unknown as _].into_iter())
+        Box::new(
+            iter::once(&self.scriptures as _)
+                .chain((self.unknown.count() > 0).then(|| &self.unknown as _)),
+        )
     }
 }
 
@@ -250,10 +253,35 @@ impl LibraryItem for Scriptures {
                 &self.nt as _,
                 &self.pgp as _,
                 //&self.proc as _,
-                &self.unknown as _,
             ]
-            .into_iter(),
+            .into_iter()
+            .chain((self.unknown.count() > 0).then(|| &self.unknown as _)),
         )
+    }
+}
+
+impl Default for BoM {
+    fn default() -> Self {
+        BoM {
+            count: 0,
+            introduction: Chapter::new_custom(String::from("Introduction")),
+            ne1: Chapters::new(String::from("1 Nephi")),
+            ne2: Chapters::new(String::from("2 Nephi")),
+            jacob: Chapters::new(String::from("Jacob")),
+            enos: Chapters::new(String::from("Enos")),
+            jarom: Chapters::new(String::from("Jarom")),
+            omni: Chapters::new(String::from("Omni")),
+            wom: Chapters::new(String::from("Words of Mormon")),
+            mosiah: Chapters::new(String::from("Mosiah")),
+            alma: Chapters::new(String::from("Alma")),
+            helaman: Chapters::new(String::from("Helaman")),
+            ne3: Chapters::new(String::from("3 Nephi")),
+            ne4: Chapters::new(String::from("4 Nephi")),
+            mormon: Chapters::new(String::from("Mormon")),
+            ether: Chapters::new(String::from("Ether")),
+            moroni: Chapters::new(String::from("Moroni")),
+            unknown: Unknown::default(),
+        }
     }
 }
 
@@ -316,10 +344,58 @@ impl LibraryItem for BoM {
                 &self.mormon as _,
                 &self.ether as _,
                 &self.moroni as _,
-                &self.unknown as _,
             ]
-            .into_iter(),
+            .into_iter()
+            .chain((self.unknown.count() > 0).then(|| &self.unknown as _)),
         )
+    }
+}
+
+impl Default for Ot {
+    fn default() -> Self {
+        Ot {
+            count: 0,
+            genesis: Chapters::new(String::from("Genesis")),
+            exodus: Chapters::new(String::from("Exodus")),
+            leviticus: Chapters::new(String::from("Leviticus")),
+            numbers: Chapters::new(String::from("Numbers")),
+            deut: Chapters::new(String::from("Deuteronomy")),
+            joshua: Chapters::new(String::from("Joshua")),
+            judges: Chapters::new(String::from("Judges")),
+            ruth: Chapters::new(String::from("Ruth")),
+            sam1: Chapters::new(String::from("1 Samuel")),
+            sam2: Chapters::new(String::from("2 Samuel")),
+            kings1: Chapters::new(String::from("1 Kings")),
+            kings2: Chapters::new(String::from("2 Kings")),
+            chron1: Chapters::new(String::from("1 Chronicles")),
+            chron2: Chapters::new(String::from("2 Chronicles")),
+            ezra: Chapters::new(String::from("Ezra")),
+            neh: Chapters::new(String::from("Nehemiah")),
+            esther: Chapters::new(String::from("Esther")),
+            job: Chapters::new(String::from("Job")),
+            psalms: Chapters::new(String::from("Psalms")),
+            proverbs: Chapters::new(String::from("Proverbs")),
+            eccles: Chapters::new(String::from("Ecclesiastes")),
+            solomon_song: Chapters::new(String::from("Song of Solomon")),
+            isaiah: Chapters::new(String::from("Isaiah")),
+            jeremiah: Chapters::new(String::from("Jeremiah")),
+            lament: Chapters::new(String::from("Lamentations")),
+            ezekiel: Chapters::new(String::from("Ezekiel")),
+            daniel: Chapters::new(String::from("Daniel")),
+            hosea: Chapters::new(String::from("Hosea")),
+            joel: Chapters::new(String::from("Joel")),
+            amos: Chapters::new(String::from("Amos")),
+            obadiah: Chapter::new_custom(String::from("Obadiah")),
+            jonah: Chapters::new(String::from("Jonah")),
+            micah: Chapters::new(String::from("Micah")),
+            nahum: Chapters::new(String::from("Nahum")),
+            habak: Chapters::new(String::from("Habakkuk")),
+            zeph: Chapters::new(String::from("Zephaniah")),
+            haggai: Chapters::new(String::from("Haggai")),
+            zech: Chapters::new(String::from("Zechariah")),
+            malachi: Chapters::new(String::from("Malachi")),
+            unknown: Unknown::default(),
+        }
     }
 }
 
@@ -428,10 +504,47 @@ impl LibraryItem for Ot {
                 &self.haggai as _,
                 &self.zech as _,
                 &self.malachi as _,
-                &self.unknown as _,
             ]
-            .into_iter(),
+            .into_iter()
+            .chain((self.unknown.count() > 0).then(|| &self.unknown as _)),
         )
+    }
+}
+
+impl Default for Nt {
+    fn default() -> Self {
+        Nt {
+            count: 0,
+            title: Chapter::new_custom(String::from("Title")),
+            matt: Chapters::new(String::from("Matthew")),
+            mark: Chapters::new(String::from("Mark")),
+            luke: Chapters::new(String::from("Luke")),
+            john: Chapters::new(String::from("John")),
+            acts: Chapters::new(String::from("Acts")),
+            romans: Chapters::new(String::from("Romans")),
+            cor1: Chapters::new(String::from("1 Corinthians")),
+            cor2: Chapters::new(String::from("2 Corinthians")),
+            galatians: Chapters::new(String::from("Galatians")),
+            ephesians: Chapters::new(String::from("Ephesians")),
+            philippians: Chapters::new(String::from("Philippians")),
+            colossians: Chapters::new(String::from("Colossians")),
+            thess1: Chapters::new(String::from("1 Thessalonians")),
+            thess2: Chapters::new(String::from("2 Thessalonians")),
+            tim1: Chapters::new(String::from("1 Timothy")),
+            tim2: Chapters::new(String::from("2 Timothy")),
+            titus: Chapters::new(String::from("Titus")),
+            philemon: Chapter::new_custom(String::from("Philemon")),
+            heb: Chapters::new(String::from("Hebrews")),
+            james: Chapters::new(String::from("James")),
+            peter1: Chapters::new(String::from("1 Peter")),
+            peter2: Chapters::new(String::from("2 Peter")),
+            john1: Chapters::new(String::from("1 John")),
+            john2: Chapter::new_custom(String::from("2 John")),
+            john3: Chapter::new_custom(String::from("3 John")),
+            jude: Chapter::new_custom(String::from("Jude")),
+            revelation: Chapters::new(String::from("Revelation")),
+            unknown: Unknown::default(),
+        }
     }
 }
 
@@ -518,10 +631,24 @@ impl LibraryItem for Nt {
                 &self.john3 as _,
                 &self.jude as _,
                 &self.revelation as _,
-                &self.unknown as _,
             ]
-            .into_iter(),
+            .into_iter()
+            .chain((self.unknown.count() > 0).then(|| &self.unknown as _)),
         )
+    }
+}
+
+impl Default for DnC {
+    fn default() -> Self {
+        DnC {
+            count: 0,
+            title: Chapter::new_custom(String::from("Title")),
+            introduction: Chapter::new_custom(String::from("Introduction")),
+            chronology: Chapter::new_custom(String::from("Chronology")),
+            sections: Chapters::new(String::from("Sections")),
+            declarations: Chapters::new(String::from("Declarations")),
+            unknown: Unknown::default(),
+        }
     }
 }
 
@@ -562,10 +689,24 @@ impl LibraryItem for DnC {
                 &self.chronology as _,
                 &self.sections as _,
                 &self.declarations as _,
-                &self.unknown as _,
             ]
-            .into_iter(),
+            .into_iter()
+            .chain((self.unknown.count() > 0).then(|| &self.unknown as _)),
         )
+    }
+}
+
+impl Default for PGP {
+    fn default() -> Self {
+        PGP {
+            count: 0,
+            moses: Chapters::new(String::from("Moses")),
+            abraham: Chapters::new(String::from("Abraham")),
+            js_matt: Chapters::new(String::from("Joseph Smith—Matthew")),
+            js_hist: Chapters::new(String::from("Joseph Smith—History")),
+            aof: Chapter::new_custom(String::from("Articles of Faith")),
+            unknown: Unknown::default(),
+        }
     }
 }
 
@@ -606,10 +747,20 @@ impl LibraryItem for PGP {
                 &self.js_matt as _,
                 &self.js_hist as _,
                 &self.aof as _,
-                &self.unknown as _,
             ]
-            .into_iter(),
+            .into_iter()
+            .chain((self.unknown.count() > 0).then(|| &self.unknown as _)),
         )
+    }
+}
+
+impl Chapters {
+    fn new(name: String) -> Self {
+        Chapters {
+            name,
+            count: 0,
+            chapters: BTreeMap::new(),
+        }
     }
 }
 
@@ -643,8 +794,12 @@ impl LibraryItem for Chapters {
 
 impl Chapter {
     fn new(n: usize) -> Self {
+        Self::new_custom(format!("Chapter {n}"))
+    }
+
+    fn new_custom(name: String) -> Self {
         Chapter {
-            name: format!("Chapter {n}"),
+            name,
             count: 0,
             verses: BTreeMap::new(),
             unknown: Unknown::default(),

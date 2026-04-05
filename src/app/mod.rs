@@ -10,8 +10,6 @@ use components::LoadFile;
 
 use crate::app::components::{analytics::AnnotSet, Analytics};
 
-const DASHLEY: &'static [u8] = include_bytes!("../../dashley.csv");
-
 #[component]
 pub fn App() -> impl IntoView {
     let (annotations, set_annotations) = signal::<Option<AnnotSet>>(None);
@@ -37,7 +35,6 @@ pub fn App() -> impl IntoView {
 
         set_annotations.set(Some(AnnotSet { annotations, study }))
     };
-    on_load(DASHLEY);
     view! {
         <div class="bg-gb-bg text-gb-fg min-w-screen min-h-screen flex flex-col items-center p-20 space-y-10">
             <LoadFile on_load=on_load />

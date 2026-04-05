@@ -13,3 +13,34 @@
   --color-gb-purple: #b16286;
   --color-gb-aqua: #8ec07c;
 }
+
+._chartistry_tick_label > text {
+  font-family: sans-serif;
+  fill: var(--color-gb-fg) !important;
+}
+
+._chartistry_rotated_label > text {
+  font-family: sans-serif;
+  fill: var(--color-gb-fg) !important;
+}
+
+._chartistry_tooltip {
+  font-size: 0.9rem !important;
+  font-family: sans-serif !important;
+  background-color: var(--color-gb-bg) !important;
+  border-color: var(--color-gb-fg) !important;
+}
+
+._chartistry_tooltip > table > tbody > tr > td {
+  font-family: sans-serif !important;
+  padding-left: 0px !important;
+  text-align: center !important;
+}
+
+._chartistry_taster {
+  display: none;
+}
+
+._chartistry_axis_marker {
+  stroke: var(--color-gb-fg) !important;
+}

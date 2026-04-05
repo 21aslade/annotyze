@@ -1,5 +1,7 @@
 use std::{collections::BTreeMap, convert::Infallible, fmt, iter, str::FromStr};
 
+pub mod progress;
+
 pub trait LibraryItem {
     fn insert<'a, I: Iterator<Item = &'a str>>(&mut self, i: I) -> Result<(), Option<&'a str>>
     where

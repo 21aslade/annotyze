@@ -36,13 +36,24 @@ pub fn Summary<'a>(item: &'a dyn LibraryItem) -> impl IntoView + use<> {
         }
     };
 
+    let icon_class = if has_children {
+        "text-2xl"
+    } else {
+        "text-2xl invisible"
+    };
+
     let right = i::BiChevronRightRegular;
     let down = i::BiChevronDownRegular;
     let icon = move || if expanded.get() { down } else { right };
     view! {
         <div class="w-full py-1">
             <div class=row_class on:click=on_click>
-                <span class="flex items-center space-x-5"><span class="text-2xl"><Icon width="1em" height="1em" icon=icon /></span>{name}</span>
+                <span class="flex items-center space-x-5">
+                    <span class=icon_class>
+                        <Icon width="1em" height="1em" icon=icon />
+                    </span>
+                    {name}
+                </span>
                 <span>{count}</span>
             </div>
             <div class=child_class>{children}</div>
